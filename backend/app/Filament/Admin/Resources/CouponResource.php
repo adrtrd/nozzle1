@@ -7,6 +7,7 @@ use App\Models\Coupon;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Forms\Components\Section;
@@ -22,16 +23,16 @@ class CouponResource extends Resource
 {
     protected static ?string $model = Coupon::class;
 
-    protected static string|\UnitEnum|null $navigationIcon = 'heroicon-o-ticket';
-    
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-ticket';
+
     protected static string|\UnitEnum|null $navigationGroup = 'التجارة الإلكترونية';
 
     protected static ?string $modelLabel = 'كوبون';
     protected static ?string $pluralModelLabel = 'الكوبونات';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Section::make('معلومات الكوبون')
                     ->schema([
