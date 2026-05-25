@@ -30,6 +30,8 @@ class OrderInfolist
                                         'delivered' => 'success',
                                         'cancelled' => 'danger',
                                     }),
+                                TextEntry::make('payment_method')
+                                    ->label('طريقة الدفع'),
                                 TextEntry::make('created_at')
                                     ->label('تاريخ الطلب')
                                     ->dateTime(),
@@ -38,8 +40,10 @@ class OrderInfolist
 
                         Section::make('معلومات العميل')
                             ->schema([
+                                TextEntry::make('customer_name')
+                                    ->label('اسم المستلم'),
                                 TextEntry::make('user.name')
-                                    ->label('الاسم'),
+                                    ->label('حساب المستخدم'),
                                 TextEntry::make('user.email')
                                     ->label('البريد الإلكتروني'),
                                 TextEntry::make('customer_phone')
@@ -51,6 +55,8 @@ class OrderInfolist
                             ->schema([
                                 TextEntry::make('customer_address')
                                     ->label('العنوان'),
+                                TextEntry::make('notes')
+                                    ->label('ملاحظات العميل'),
                                 TextEntry::make('shipping_method')
                                     ->label('طريقة الشحن'),
                                 TextEntry::make('tracking_number')

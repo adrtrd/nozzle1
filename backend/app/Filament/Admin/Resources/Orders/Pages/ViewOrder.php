@@ -17,7 +17,9 @@ class ViewOrder extends ViewRecord
                 ->icon('heroicon-o-printer')
                 ->color('success')
                 ->action(function (\App\Models\Order $record) {
-                    $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('invoices.invoice', ['order' => $record]);
+                    $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('invoices.invoice', ['order' => $record])
+                        ->setOption('isRemoteEnabled', true)
+                        ->setOption('isHtml5ParserEnabled', true);
                     return response()->streamDownload(function () use ($pdf) {
                         echo $pdf->stream();
                     }, "invoice-{$record->id}.pdf");

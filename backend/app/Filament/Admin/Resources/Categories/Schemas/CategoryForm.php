@@ -90,7 +90,8 @@ class CategoryForm
                         FileUpload::make('image')
                             ->label('صورة التصنيف / بنر القسم')
                             ->image()
-                            ->directory('categories'),
+                            ->directory('categories')
+                            ->helperText('القياس الموصى به: مربع (500 × 500 بكسل) أو بنر قسم (1024 × 400 بكسل)'),
                     ]),
             ]);
     }

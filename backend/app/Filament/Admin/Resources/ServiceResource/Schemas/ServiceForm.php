@@ -42,7 +42,8 @@ class ServiceForm
                             ->label('الصورة (بنر)')
                             ->image()
                             ->directory('services')
-                            ->required(),
+                            ->required()
+                            ->helperText('القياس الموصى به: 800 × 400 بكسل (أو نسبة 2:1)'),
 
                         Toggle::make('is_active')
                             ->label('نشط')

@@ -8,6 +8,7 @@ use Filament\Actions\EditAction;
 use Filament\Tables\Columns\ColorColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Table;
 
 class CategoriesTable
@@ -21,7 +22,12 @@ class CategoriesTable
                     ->circular(),
                 
                 TextColumn::make('name')
-                    ->label('اسم التصنيف')
+                    ->label('الاسم (EN)')
+                    ->searchable()
+                    ->sortable(),
+
+                TextColumn::make('name_ar')
+                    ->label('الاسم (AR)')
                     ->searchable()
                     ->sortable(),
 
@@ -29,6 +35,16 @@ class CategoriesTable
                     ->label('التصنيف الأب')
                     ->badge()
                     ->placeholder('تصنيف أساسي')
+                    ->sortable(),
+
+                IconColumn::make('is_active')
+                    ->label('نشط')
+                    ->boolean()
+                    ->sortable(),
+
+                IconColumn::make('is_featured')
+                    ->label('مميز')
+                    ->boolean()
                     ->sortable(),
 
                 TextColumn::make('icon')
@@ -61,3 +77,4 @@ class CategoriesTable
             ]);
     }
 }
+

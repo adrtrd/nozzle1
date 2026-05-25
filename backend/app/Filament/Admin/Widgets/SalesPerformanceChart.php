@@ -15,7 +15,7 @@ class SalesPerformanceChart extends ChartWidget
     {
         $data = Order::where('status', 'completed')
             ->where('created_at', '>=', Carbon::now()->subYear())
-            ->selectRaw('SUM(total_amount) as total, MONTH(created_at) as month')
+            ->selectRaw("SUM(total_amount) as total, MONTH(created_at) as month")
             ->groupBy('month')
             ->orderBy('month')
             ->pluck('total', 'month')

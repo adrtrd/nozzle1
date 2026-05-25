@@ -19,10 +19,22 @@ class CategoryForm
                     ->description('أدخل معلومات الصنف أو الفئة الأساسية هنا')
                     ->schema([
                         TextInput::make('name')
-                            ->label('اسم القسم')
-                            ->placeholder('مثلاً: غسيل السيارات، تبديل الزيت...')
+                            ->label('اسم القسم (بالإنكليزية)')
+                            ->placeholder('مثلاً: Engine Oils, Filters...')
                             ->required()
                             ->maxLength(255),
+                        TextInput::make('name_ar')
+                            ->label('اسم القسم (بالعربية)')
+                            ->placeholder('مثلاً: زيوت المحركات، الفلاتر...')
+                            ->required()
+                            ->maxLength(255),
+                        Select::make('parent_id')
+                            ->label('القسم الرئيسي (الأب)')
+                            ->relationship('parent', 'name')
+                            ->placeholder('اختر قسماً رئيسياً إذا كان هذا قسماً فرعياً')
+                            ->nullable()
+                            ->searchable()
+                            ->preload(),
                         Select::make('icon')
                             ->label('أيقونة القسم')
                             ->options([
@@ -50,8 +62,13 @@ class CategoryForm
                             ->numeric()
                             ->default(0),
                         Textarea::make('description')
-                            ->label('وصف القسم')
-                            ->placeholder('أدخل وصفاً مختصراً لهذا القسم...')
+                            ->label('وصف القسم (بالإنكليزية)')
+                            ->placeholder('أدخل وصفاً مختصراً بالإنكليزية...')
+                            ->maxLength(65535)
+                            ->columnSpanFull(),
+                        Textarea::make('description_ar')
+                            ->label('وصف القسم (بالعربية)')
+                            ->placeholder('أدخل وصفاً مختصراً بالعربية...')
                             ->maxLength(65535)
                             ->columnSpanFull(),
                         FileUpload::make('image')

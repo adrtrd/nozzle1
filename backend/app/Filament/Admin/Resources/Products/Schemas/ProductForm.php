@@ -45,7 +45,7 @@ class ProductForm
                                         
                                         Select::make('brand_id')
                                             ->label('الماركة')
-                                            ->relationship('brand', 'name')
+                                            ->relationship('brandRelation', 'name')
                                             ->searchable()
                                             ->preload(),
                                     ]),
@@ -155,14 +155,16 @@ class ProductForm
                                     ->label('الصورة الأساسية')
                                     ->image()
                                     ->directory('products')
-                                    ->required(),
+                                    ->required()
+                                    ->helperText('القياس الموصى به: 500 × 500 بكسل (أو نسبة 1:1)'),
                                 
                                 FileUpload::make('images')
                                     ->label('صور إضافية')
                                     ->image()
                                     ->multiple()
                                     ->directory('products/gallery')
-                                    ->reorderable(),
+                                    ->reorderable()
+                                    ->helperText('القياس الموصى به: 500 × 500 بكسل (أو نسبة 1:1)'),
                             ])
                             ->columnSpanFull(),
                     ]),

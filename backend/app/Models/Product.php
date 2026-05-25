@@ -30,6 +30,11 @@ class Product extends Model
         return $this->belongsTo(Brand::class);
     }
 
+    public function brandRelation()
+    {
+        return $this->belongsTo(Brand::class, 'brand_id');
+    }
+
     public function reviews()
     {
         return $this->hasMany(ProductReview::class);
@@ -38,6 +43,11 @@ class Product extends Model
     public function variations()
     {
         return $this->hasMany(ProductVariation::class);
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(ProductTag::class, 'product_product_tag');
     }
 
     public function scopeActive($query)

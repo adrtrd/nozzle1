@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\BannerController;
+use App\Http\Controllers\Api\BrandController;
 use App\Http\Controllers\Api\CategoryBannerController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CouponController;
@@ -23,6 +24,7 @@ Route::get('/categories', [CategoryController::class, 'index']);
 
 // Products
 Route::get('/products', [ProductController::class, 'index']);
+Route::get('/brands', [BrandController::class, 'index']); // New
 Route::get('/products/tags', [ProductTagController::class, 'index']); // New
 Route::get('/products/{product}', [ProductController::class, 'show']);
 Route::get('/categories/{category}/products', [ProductController::class, 'byCategory']);

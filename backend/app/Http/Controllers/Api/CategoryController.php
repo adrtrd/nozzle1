@@ -37,7 +37,7 @@ class CategoryController extends Controller
                 'order_index' => $category->order_index,
                 'products_count' => $category->products_count,
                 'has_subcategories' => $category->subCategories->count() > 0,
-                'image_url' => $category->image ? url('storage/' . $category->image) : null,
+                'image_url' => $category->image ? (str_starts_with($category->image, 'http') ? $category->image : url('storage/' . $category->image)) : null,
             ];
 
             if ($includeChildren) {
@@ -46,7 +46,7 @@ class CategoryController extends Controller
                         'id' => $sub->id,
                         'name' => $sub->name,
                         'name_ar' => $sub->name_ar ?? $sub->name,
-                        'image_url' => $sub->image ? url('storage/' . $sub->image) : null,
+                        'image_url' => $sub->image ? (str_starts_with($sub->image, 'http') ? $sub->image : url('storage/' . $sub->image)) : null,
                         'products_count' => $sub->products()->count(),
                     ];
                 });

@@ -22,15 +22,27 @@ class ProductsTable
                     ->rounded(),
                 
                 TextColumn::make('name')
-                    ->label('')
+                    ->label('الاسم (EN)')
                     ->description(fn ($record) => $record->sku ? 'رمز: ' . $record->sku : '')
                     ->searchable()
                     ->sortable(),
 
+                TextColumn::make('name_ar')
+                    ->label('الاسم (AR)')
+                    ->searchable()
+                    ->sortable(),
+
                 TextColumn::make('category.name')
-                    ->label('القسم / الصنف')
+                    ->label('القسم')
                     ->badge()
                     ->color('info')
+                    ->sortable(),
+
+                TextColumn::make('brandRelation.name')
+                    ->label('الماركة')
+                    ->badge()
+                    ->color('gray')
+                    ->placeholder('بدون ماركة')
                     ->sortable(),
 
                 TextColumn::make('price')
@@ -39,19 +51,44 @@ class ProductsTable
                     ->sortable()
                     ->color('danger'),
 
-                TextColumn::make('is_available')
-                    ->label('التوفر والمخزون')
+                TextColumn::make('quantity')
+                    ->label('الكمية')
+                    ->numeric()
+                    ->sortable(),
+
+                TextColumn::make('status')
+                    ->label('الحالة')
                     ->badge()
-                    ->state(fn ($record) => $record->is_available ? 'متوفر' : 'غير متوفر')
-                    ->color(fn ($state) => $state === 'متوفر' ? 'success' : 'danger'),
+                    ->color(fn ($state) => match ($state) {
+                        'published' => 'success',
+                        'draft' => 'warning',
+                        'out_of_stock' => 'danger',
+                        default => 'gray',
+                    })
+                    ->sortable(),
+
+                ToggleColumn::make('is_active')
+                    ->label('نشط'),
 
                 ToggleColumn::make('is_featured')
-                    ->label('الظهور'),
+                    ->label('مميز'),
             ])
             ->filters([
                 \Filament\Tables\Filters\SelectFilter::make('category')
                     ->label('القسم')
                     ->relationship('category', 'name'),
+                
+                \Filament\Tables\Filters\SelectFilter::make('brand')
+                    ->label('الماركة')
+                    ->relationship('brandRelation', 'name'),
+
+                \Filament\Tables\Filters\SelectFilter::make('status')
+                    ->label('الحالة')
+                    ->options([
+                        'draft' => 'مسودة',
+                        'published' => 'منشور',
+                        'out_of_stock' => 'نفذ من المخزن',
+                    ]),
                 
                 \Filament\Tables\Filters\TernaryFilter::make('is_available')
                     ->label('التوفر')

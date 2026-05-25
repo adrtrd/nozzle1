@@ -7,6 +7,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Table;
 
 class BrandsTable
@@ -15,13 +16,31 @@ class BrandsTable
     {
         return $table
             ->columns([
+                ImageColumn::make('logo')
+                    ->label('الشعار (Logo)')
+                    ->circular(),
+
                 ImageColumn::make('image')
-                    ->label('الشعار')
+                    ->label('الشعار (Image)')
                     ->circular(),
                 
                 TextColumn::make('name')
-                    ->label('الماركة')
+                    ->label('الاسم (EN)')
                     ->searchable()
+                    ->sortable(),
+
+                TextColumn::make('name_ar')
+                    ->label('الاسم (AR)')
+                    ->searchable()
+                    ->sortable(),
+
+                IconColumn::make('is_active')
+                    ->label('نشط')
+                    ->boolean()
+                    ->sortable(),
+
+                TextColumn::make('sort_order')
+                    ->label('الترتيب')
                     ->sortable(),
 
                 TextColumn::make('products_count')
@@ -41,3 +60,4 @@ class BrandsTable
             ]);
     }
 }
+

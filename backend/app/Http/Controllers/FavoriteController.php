@@ -18,10 +18,45 @@ class FavoriteController extends Controller
         }
 
         $favorites = Favorite::where('user_id', $userId)
-            ->with(['product' => function($query) {
-                 $query->select('id', 'name', 'name_ar', 'brand', 'price', 'old_price', 'image', 'rating', 'reviews_count as reviews', 'stock');
-            }])
-            ->get();
+            ->with(['product.category', 'product.brandRelation'])
+            ->get()
+            ->map(function ($fav) {
+                if (!$fav->product) return null;
+                
+                $product = $fav->product;
+                return [
+                    'id' => $fav->id,
+                    'user_id' => $fav->user_id,
+                    'product_id' => $fav->product_id,
+                    'product' => [
+                        'id' => $product->id,
+                        'name' => $product->name,
+                        'name_ar' => $product->name_ar ?? $product->name,
+                        'description' => $product->description,
+                        'description_ar' => $product->description_ar ?? $product->description,
+                        'brand' => $product->brandRelation?->name ?? (is_string($product->brand) ? $product->brand : ''),
+                        'brand_ar' => $product->brandRelation?->name_ar ?? $product->brandRelation?->name ?? (is_string($product->brand) ? $product->brand : ''),
+                        'price' => (double) $product->price,
+                        'old_price' => $product->old_price ? (double) $product->old_price : null,
+                        'image' => $product->image ? (str_starts_with($product->image, 'http') ? $product->image : asset('storage/' . $product->image)) : null,
+                        'image_url' => $product->image ? (str_starts_with($product->image, 'http') ? $product->image : asset('storage/' . $product->image)) : null,
+                        'images' => is_array($product->images) ? array_map(fn($img) => str_starts_with($img, 'http') ? $img : asset('storage/' . $img), $product->images) : [],
+                        'is_available' => (bool) $product->is_available,
+                        'is_featured' => (bool) $product->is_featured,
+                        'home_section' => $product->home_section ?? 'none',
+                        'quantity' => (int) $product->quantity,
+                        'in_stock' => $product->quantity > 0 && $product->is_available,
+                        'is_low_stock' => $product->quantity <= ($product->low_stock_threshold ?? 5),
+                        'features' => is_array($product->features) ? $product->features : [],
+                        'specifications' => is_array($product->specifications) ? $product->specifications : new \stdClass(),
+                        'category_id' => $product->category_id,
+                        'category_name' => $product->category?->name_ar ?? $product->category?->name,
+                        'created_at' => $product->created_at,
+                    ]
+                ];
+            })
+            ->filter()
+            ->values();
 
         return response()->json([
             'success' => true,

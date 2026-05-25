@@ -23,7 +23,7 @@ class SpecialOfferController extends Controller
                     'description_ar' => $product->description_ar ?? $product->description,
                     'price' => (double) $product->price,
                     'old_price' => $product->old_price ? (double) $product->old_price : null,
-                    'image_url' => $product->image ? asset('storage/' . $product->image) : null,
+                    'image_url' => $product->image ? (str_starts_with($product->image, 'http') ? $product->image : asset('storage/' . $product->image)) : null,
                     'category_name' => $product->category?->name_ar ?? $product->category?->name,
                 ];
             });

@@ -20,10 +20,19 @@ class CategoriesTable
                     ->label('')
                     ->circular(),
                 TextColumn::make('name')
-                    ->label('اسم القسم')
+                    ->label('اسم القسم (بالإنكليزية)')
                     ->searchable()
                     ->sortable()
                     ->weight('bold'),
+                TextColumn::make('name_ar')
+                    ->label('اسم القسم (بالعربية)')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('parent.name')
+                    ->label('القسم الرئيسي')
+                    ->badge()
+                    ->placeholder('قسم رئيسي')
+                    ->sortable(),
                 \Filament\Tables\Columns\ColorColumn::make('color')
                     ->label('اللون'),
                 TextColumn::make('order_index')

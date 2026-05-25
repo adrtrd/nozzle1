@@ -18,8 +18,11 @@ class CategoryBannerController extends Controller
                 return [
                     'id' => $banner->id,
                     'title' => $banner->title,
-                    'image_url' => $banner->image ? asset('storage/' . $banner->image) : null,
-                    'category_id' => $banner->link_id,
+                    'image_url' => $banner->image ? (str_starts_with($banner->image, 'http') ? $banner->image : asset('storage/' . $banner->image)) : null,
+                    'category_id' => $banner->category_id ?? $banner->link_id,
+                    'subcategory_id' => $banner->subcategory_id,
+                    'brand_id' => $banner->brand_id,
+                    'product_id' => $banner->product_id,
                 ];
             });
 
