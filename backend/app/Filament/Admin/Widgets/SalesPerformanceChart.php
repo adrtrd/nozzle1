@@ -13,9 +13,14 @@ class SalesPerformanceChart extends ChartWidget
 
     protected function getData(): array
     {
+        $driver = config('database.default');
+        $monthExpr = $driver === 'sqlite'
+            ? "CAST(strftime('%m', created_at) AS INTEGER)"
+            : "MONTH(created_at)";
+
         $data = Order::where('status', 'completed')
             ->where('created_at', '>=', Carbon::now()->subYear())
-            ->selectRaw("SUM(total_amount) as total, MONTH(created_at) as month")
+            ->selectRaw("SUM(total_amount) as total, {$monthExpr} as month")
             ->groupBy('month')
             ->orderBy('month')
             ->pluck('total', 'month')
